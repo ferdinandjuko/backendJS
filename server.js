@@ -12,8 +12,10 @@ app.get('/', (req, res) => {
 });
 
 const usersRouter = require('./routes/users');
+const postsRouter = require('./routes/posts');
 
 app.use('/user', usersRouter);
+app.use('/posts', postsRouter);
 
 
 app.listen(3500, () => {
