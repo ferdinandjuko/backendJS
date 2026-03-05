@@ -11,6 +11,9 @@ app.get('/', (req, res) => {
     res.render('index', { text: "World" });
 });
 
+const usersRouter = require('./routes/users');
+
+app.use('/user', usersRouter);
 
 
 app.listen(3500, () => {
