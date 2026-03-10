@@ -7,10 +7,11 @@ router.get('/', (req, res) => {
 })
 
 router.get('/new', (req, res) => {
-    res.send('User New Form');
+    res.render('index', { firstName: 'aware' });
 });
 
 router.post('/', (req, res) => {
+    console.log(req.body.firstName);
     res.send('Create User');
 });
 
