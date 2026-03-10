@@ -5,6 +5,8 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
+app.use(logger);
+
 app.get('/', (req, res) => {
     console.log('Awareness');
     res.download('server.js');
@@ -17,6 +19,10 @@ const postsRouter = require('./routes/posts');
 app.use('/user', usersRouter);
 app.use('/posts', postsRouter);
 
+function logger(req, res, next) {
+    console.log(req.originalUrl);
+    next();
+}
 
 app.listen(3500, () => {
     console.log('Server is running on port 3500');
