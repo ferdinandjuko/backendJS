@@ -10,7 +10,7 @@ app.use(logger);
 app.get('/', (req, res) => {
     console.log('Awareness');
     res.download('server.js');
-    res.render('index', { text: "World" });
+    res.render('index');
 });
 
 const usersRouter = require('./routes/users');
