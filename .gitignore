@@ -1,3 +1,3 @@
-node_modules
-package-lock.json
+express-init/node_modules
+express-init/package-lock.json
 .env
