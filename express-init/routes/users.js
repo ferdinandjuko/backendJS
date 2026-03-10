@@ -11,6 +11,14 @@ router.get('/new', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+    const isValid = true;
+    if (isValid) {
+        users.push({ name: req.body.firstName });
+        res.redirect(`/user/${users.length - 1}`);
+    } else {
+        console.log('Invalid user');
+        res.render('index', { firstName: req.body.firstName });
+    }
     console.log(req.body.firstName);
     res.send('Create User');
 });
