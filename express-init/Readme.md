@@ -54,3 +54,7 @@ express-basics/
 ├── package.json        # Project metadata and dependencies
 ├── server.js           # Main application entry point
 └── README.md          # This file
+
+---
+
+**Author:** Ferdinand Juko
