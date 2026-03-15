@@ -4,10 +4,17 @@ const corsOption = require('./config/corsOption');
 
 const app = express()
 
+app.use(express.json());
+
 // sharing corse
 app.use(cors(corsOption));
 
-app.use('/api/stuff', (req, res, next) => {
+app.post('/api/stuff', (req, res, next) => {
+    console.log(req.body);
+    res.status(201).json({ message: 'Objet créé !' });
+});
+
+app.get('/api/stuff', (req, res, next) => {
     const stuff = [
         {
             _id: 'oeihfzeoi',
