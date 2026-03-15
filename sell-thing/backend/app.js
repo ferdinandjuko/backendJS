@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const corsOption = require('./config/corsOption');
+const connectDB = require('./config/connDB');
 
 const app = express()
 
@@ -8,6 +9,9 @@ app.use(express.json());
 
 // sharing corse
 app.use(cors(corsOption));
+
+// connect to database
+connectDB();
 
 app.post('/api/stuff', (req, res, next) => {
     console.log(req.body);
