@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Thing = require('../../models/Thing');
 
-router.route('/stuff')
+router.route('/')
     .post((req, res) => {
         delete req.body._id;
         const thing = new Thing({
@@ -22,7 +22,12 @@ router.route('/stuff')
                 res.status(200).json(stuff);
             })
             .catch((error) => res.status(400).json({ error }));
-    })
-    ;
+    });
+
+router.route('/:id').get((req, res) => {
+    Thing.findOne({ _id: req.params.id })
+        .then((thing) => res.status(200).json(thing))
+        .catch((error) => res.status(404).json({ error }));
+});
 
 module.exports = router;

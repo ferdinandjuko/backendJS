@@ -17,6 +17,6 @@ app.use(cors(corsOption));
 // connect to database
 connectDB();
 
-app.use('/api', thingRouter);
+app.use('/api/stuff', thingRouter);
 
 module.exports = app;
