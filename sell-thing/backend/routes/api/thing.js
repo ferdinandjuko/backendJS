@@ -24,10 +24,24 @@ router.route('/')
             .catch((error) => res.status(400).json({ error }));
     });
 
-router.route('/:id').get((req, res) => {
-    Thing.findOne({ _id: req.params.id })
-        .then((thing) => res.status(200).json(thing))
-        .catch((error) => res.status(404).json({ error }));
-});
+router.route('/:id')
+    .get((req, res) => {
+        Thing.findOne({ _id: req.params.id })
+            .then((thing) => res.status(200).json(thing))
+            .catch((error) => res.status(404).json({ error }));
+    })
+    .put(async (req, res) => {
+        const thing = await Thing.findOne({ _id: req.params.id });
+        if (!thing) {
+            return res.status(404).json({ message: 'Objet non trouvé' });
+        }
+        thing.title = req.body.title;
+        thing.description = req.body.description;
+        thing.imageUrl = req.body.imageUrl;
+        thing.price = req.body.price;
+        thing.save()
+            .then(() => res.status(200).json({ message: 'Objet modifié !' }))
+            .catch((error) => res.status(400).json({ error }));
+    });
 
 module.exports = router;
