@@ -42,6 +42,15 @@ router.route('/:id')
         thing.save()
             .then(() => res.status(200).json({ message: 'Objet modifié !' }))
             .catch((error) => res.status(400).json({ error }));
+    })
+    .delete((req, res) => {
+        const thing = Thing.findOne({ _id: req.params.id });
+        if (!thing) {
+            return res.status(404).json({ message: 'Objet non trouvé' });
+        }
+        thing.deleteOne()
+            .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
+            .catch((error) => res.status(400).json({ error }));
     });
 
 module.exports = router;
