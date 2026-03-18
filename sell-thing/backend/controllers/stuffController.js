@@ -1,0 +1,82 @@
+const Thing = require('../models/Thing');
+
+const getAllStuff = async (req, res) => {
+    try {
+        const things = await Thing.find();
+        if (!things) {
+            return res.status(404).json({ message: 'No things found' });
+        }
+        res.json(things);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+const createStuff = async (req, res) => {
+    try {
+        const thing = await Thing.create({
+            title: req.body.title,
+            description: req.body.description,
+            imageUrl: req.body.imageUrl,
+            userId: req.body.userId,
+            price: req.body.price
+        });
+        res.status(201).json({ thing });
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+const getOneStuff = async (req, res) => {
+    try {
+        const thing = await Thing.findOne({ _id: req.params.id });
+        if (!thing) {
+            return res.status(404).json({ message: 'Thing not found' });
+        }
+        res.status(200).json(thing);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+const updateStuff = async (req, res) => {
+    try {
+        const thing = await Thing.findOne({ _id: req.params.id });
+        if (!thing) {
+            return res.status(404).json({ message: 'Thing not found' });
+        }
+        thing.title = req.body.title;
+        thing.description = req.body.description;
+        thing.imageUrl = req.body.imageUrl;
+        thing.userId = req.body.userId;
+        thing.price = req.body.price;
+        await thing.save();
+        res.status(200).json({ thing });
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+const deleteStuff = async (req, res) => {
+    console.log(req.params);
+    try {
+        const thing = await Thing.findOne({ _id: req.params.id });
+        if (!thing) {
+            return res.status(404).json({ message: 'Thing not found' });
+        }
+        const result = await thing.deleteOne();
+        console.log(result);
+        console.log(thing);
+        res.status(200).json({ message: 'Thing deleted' });
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+module.exports = {
+    getAllStuff,
+    getOneStuff,
+    createStuff,
+    updateStuff,
+    deleteStuff
+}
