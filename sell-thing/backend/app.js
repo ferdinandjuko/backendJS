@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const corsOption = require('./config/corsOption');
 const connectDB = require('./config/connDB');
 const thingRouter = require('./routes/api/thing');
+const productRouter = require('./routes/api/product');
 
 dotenv.config();
 
@@ -18,5 +19,6 @@ app.use(cors(corsOption));
 connectDB();
 
 app.use('/api/stuff', thingRouter);
+app.use('/api/products', productRouter);
 
 module.exports = app;
