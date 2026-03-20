@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 
-const getAllUsers = async (req, res) => {
+exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.find();
         if (!users) {
@@ -14,7 +14,7 @@ const getAllUsers = async (req, res) => {
     }
 }
 
-const signup = async (req, res) => {
+exports.signup = async (req, res) => {
     if (!req.body?.email || !req.body?.password) {
         return res.status(400).json({ message: 'Email and password are required' });
     }
@@ -32,7 +32,6 @@ const signup = async (req, res) => {
     }
 }
 
-module.exports = {
-    signup,
-    getAllUsers
+exports.login = async (req, res) => {
+
 }
