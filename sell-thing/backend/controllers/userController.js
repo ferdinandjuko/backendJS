@@ -33,5 +33,19 @@ exports.signup = async (req, res) => {
 }
 
 exports.login = async (req, res) => {
-
+    if (!req.body?.email || !req.body?.password) {
+        return res.status(400).json({ message: 'Email and password are required' });
+    }
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+        return res.status(401).json({ message: 'Identifiant or Password Invalid' });
+    }
+    const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
+    if (!isPasswordValid) {
+        return res.status(401).json({ message: 'Identifiant or Password Invalid' });
+    }
+    res.status(200).json({
+        userId: user._id,
+        token: 'TOKEN'
+    });
 }
