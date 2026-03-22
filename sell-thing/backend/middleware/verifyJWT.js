@@ -9,7 +9,7 @@ exports.exports = (req, res, next) => {
         token,
         'RANDOM_SECRET_KEY',
         (err, decoded) => {
-
+            if (err) res.sendStatus(403); // Forbidden
         }
     )
 }
