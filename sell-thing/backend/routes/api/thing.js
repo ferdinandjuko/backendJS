@@ -1,15 +1,15 @@
 const express = require('express');
-const router = express.Router();
-const Thing = require('../../models/Thing');
 const stuffController = require('../../controllers/stuffController');
+const auth = require('../../middleware/verifyJWT');
+const router = express.Router();
 
 router.route('/')
-    .post(stuffController.createStuff)
-    .get(stuffController.getAllStuff);
+    .post(auth, stuffController.createStuff)
+    .get(auth, stuffController.getAllStuff);
 
 router.route('/:id')
-    .get(stuffController.getOneStuff)
-    .put(stuffController.updateStuff)
-    .delete(stuffController.deleteStuff);
+    .get(auth, stuffController.getOneStuff)
+    .put(auth, stuffController.updateStuff)
+    .delete(auth, stuffController.deleteStuff);
 
 module.exports = router;
