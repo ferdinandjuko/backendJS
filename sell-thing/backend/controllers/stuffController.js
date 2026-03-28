@@ -1,4 +1,5 @@
 const Thing = require('../models/Thing');
+const fs = require('fs');
 
 const getAllStuff = async (req, res) => {
     try {
@@ -18,7 +19,7 @@ const createStuff = async (req, res) => {
             title: req.body.title,
             description: req.body.description,
             imageUrl: req.body.imageUrl,
-            userId: req.body.userId,
+            userId: req.auth.userId,
             price: req.body.price
         });
         res.status(201).json({ thing });
