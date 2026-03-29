@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const dotenv = require('dotenv');
 const corsOption = require('./config/corsOption');
 const connectDB = require('./config/connDB');
@@ -19,6 +20,8 @@ app.use(cors(corsOption));
 
 // connect to database
 connectDB();
+
+app.use('/images', express.static(path.join(__dirname, 'images')))
 
 app.use('/api/stuff', thingRouter);
 app.use('/api/products', productRouter);
