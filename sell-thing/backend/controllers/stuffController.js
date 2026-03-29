@@ -14,13 +14,15 @@ const getAllStuff = async (req, res) => {
 }
 
 const createStuff = async (req, res) => {
+    console.log((req.file));
+    const stuff = JSON.parse(req.body.thing);
     try {
         const thing = await Thing.create({
-            title: req.body.title,
-            description: req.body.description,
+            title: stuff.title,
+            description: stuff.description,
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
             userId: req.auth.userId,
-            price: req.body.price
+            price: stuff.price
         });
         res.status(201).json({ thing });
     } catch (error) {
