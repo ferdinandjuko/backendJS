@@ -18,7 +18,7 @@ const createStuff = async (req, res) => {
         const thing = await Thing.create({
             title: req.body.title,
             description: req.body.description,
-            imageUrl: req.body.imageUrl,
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
             userId: req.auth.userId,
             price: req.body.price
         });
