@@ -48,11 +48,13 @@ const updateStuff = async (req, res) => {
         if (!thing) {
             return res.status(404).json({ message: 'Thing not found' });
         }
-        thing.title = req.body.title;
-        thing.description = req.body.description;
-        thing.imageUrl = req.body.imageUrl;
-        thing.userId = req.body.userId;
-        thing.price = req.body.price;
+        const url = req.protocol + '://' + req.get('host');
+        if (!req.file) {
+            thing.title = req.body.title;
+            thing.description = req.body.description;
+            thing.userId = req.auth.userId;
+            thing.price = req.body.price;
+        }
         await thing.save();
         res.status(200).json({ thing });
     } catch (error) {
