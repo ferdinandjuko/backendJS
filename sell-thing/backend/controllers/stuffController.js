@@ -48,6 +48,9 @@ const updateStuff = async (req, res) => {
         if (!thing) {
             return res.status(404).json({ message: 'Thing not found' });
         }
+        if (thing.userId != req.auth.userId) {
+            res.status(401).json({ message: 'Unauthorized' });
+        }
         const url = req.protocol + '://' + req.get('host');
         if (!req.file) {
             thing.title = req.body.title;
