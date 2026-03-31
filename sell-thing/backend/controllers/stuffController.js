@@ -54,6 +54,12 @@ const updateStuff = async (req, res) => {
             thing.description = req.body.description;
             thing.userId = req.auth.userId;
             thing.price = req.body.price;
+        } else {
+            const stuff = JSON.parse(req.body.thing);
+            thing.title = stuff.title;
+            thing.description = stuff.description;
+            thing.userId = req.auth.userId;
+            thing.imageUrl = `${url}/images/${req.file.filename}`;
         }
         await thing.save();
         res.status(200).json({ thing });
