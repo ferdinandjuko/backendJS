@@ -78,6 +78,9 @@ const deleteStuff = async (req, res) => {
         if (!thing) {
             return res.status(404).json({ message: 'Thing not found' });
         }
+        if (req.auth.userId != thing.userId) {
+            res.status(401).json({ message: 'Unauthorized' });
+        }
         const result = await thing.deleteOne();
         console.log(result);
         console.log(thing);
