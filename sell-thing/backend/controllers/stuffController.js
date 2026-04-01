@@ -83,10 +83,10 @@ const deleteStuff = async (req, res) => {
         }
 
         const filename = thing.imageUrl.split('images')[1];
-        fs.unlink(`images/${filename}`);
-
-        const result = await thing.deleteOne();
-        console.log(result);
+        fs.unlink(`images/${filename}`, async () => {
+            const result = await thing.deleteOne();
+            console.log(result);
+        });
 
         res.status(200).json({ message: 'Thing deleted' });
     } catch (error) {
