@@ -83,6 +83,7 @@ const deleteStuff = async (req, res) => {
         }
 
         const filename = thing.imageUrl.split('images')[1];
+        fs.unlink(`images/${filename}`);
 
         const result = await thing.deleteOne();
         console.log(result);
