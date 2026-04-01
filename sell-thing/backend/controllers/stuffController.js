@@ -81,9 +81,12 @@ const deleteStuff = async (req, res) => {
         if (req.auth.userId != thing.userId) {
             res.status(401).json({ message: 'Unauthorized' });
         }
+
+        const filename = thing.imageUrl.split('images')[1];
+
         const result = await thing.deleteOne();
         console.log(result);
-        console.log(thing);
+
         res.status(200).json({ message: 'Thing deleted' });
     } catch (error) {
         res.status(500).json({ error });
