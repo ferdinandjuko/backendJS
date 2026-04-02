@@ -82,7 +82,7 @@ const deleteStuff = async (req, res) => {
             res.status(401).json({ message: 'Unauthorized' });
         }
 
-        const filename = thing.imageUrl.split('images')[1];
+        const filename = thing.imageUrl.split('/images/')[1];
         fs.unlink(`images/${filename}`, async () => {
             const result = await thing.deleteOne();
             console.log(result);
