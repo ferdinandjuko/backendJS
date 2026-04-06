@@ -17,3 +17,6 @@ const logEvents = async (message, logName) => {
         console.error(err);
     }
 }
+
+const logger = (req, res, next) => {
+}
