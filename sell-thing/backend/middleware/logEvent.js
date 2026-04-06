@@ -19,4 +19,5 @@ const logEvents = async (message, logName) => {
 }
 
 const logger = (req, res, next) => {
+    logEvents(`${req.protocol}://${req.get('host')}\t${req.url}`, 'reqLog.log');
 }
