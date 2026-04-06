@@ -9,6 +9,7 @@ const logEvents = async (message, logName) => {
     console.log(logItem);
     try {
         if (!fs.existsSync(path.join(__dirname, '..', 'logs'))) {
+            await fsPromises.mkdir(path.join(__dirname, '..', 'logs'));
         }
     } catch (err) {
         console.error(err);
