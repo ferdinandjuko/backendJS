@@ -9,6 +9,8 @@ const thingRouter = require('./routes/api/thing');
 const productRouter = require('./routes/api/product');
 const userRouter = require('./routes/user');
 
+const { logger } = require('./midlleware/logEvents');
+
 dotenv.config();
 
 const app = express()
@@ -20,6 +22,9 @@ app.use(cors(corsOption));
 
 // connect to database
 connectDB();
+
+// custom middleware logger
+app.use(logger);
 
 app.use('/images', express.static(path.join(__dirname, 'images')))
 
