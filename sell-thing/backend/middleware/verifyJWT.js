@@ -11,7 +11,8 @@ module.exports = (req, res, next) => {
         (err, decoded) => {
             if (err) res.sendStatus(403); // Forbidden
             req.auth = {
-                userId: decoded.userId
+                userId: decoded.userId,
+                roles: decoded.roles
             }
             next();
         }
