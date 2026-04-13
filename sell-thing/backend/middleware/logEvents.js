@@ -20,6 +20,6 @@ exports.logEvents = async (message, logName) => {
 }
 
 exports.logger = (req, res, next) => {
-    logEvents(`${req.protocol}://${req.get('host')}\t${req.url}`, 'reqLog.log');
+    this.logEvents(`${req.protocol}://${req.get('host')}\t${req.url}`, 'reqLog.log');
     next();
 }
