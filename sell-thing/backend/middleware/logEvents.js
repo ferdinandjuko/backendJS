@@ -18,3 +18,8 @@ exports.logEvents = async (message, logName) => {
         console.error(err);
     }
 }
+
+exports.logger = (req, res, next) => {
+    logEvents(`${req.protocol}://${req.get('host')}\t${req.url}`, 'reqLog.log');
+    next();
+}
