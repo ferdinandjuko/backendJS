@@ -9,7 +9,7 @@ const thingRouter = require('./routes/api/thing');
 const productRouter = require('./routes/api/product');
 const userRouter = require('./routes/user');
 
-const { logger } = require('./midlleware/logEvents');
+const { logger } = require('./middleware/logEvents');
 
 dotenv.config();
 
