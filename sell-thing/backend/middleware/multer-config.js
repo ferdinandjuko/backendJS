@@ -9,7 +9,8 @@ const fs = require('fs');
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, 'images')
+        const imagesDir = path.join(__dirname, '..', 'images');
+        callback(null, imagesDir)
     },
     filename: (req, file, callback) => {
         const name = file.originalname.split(' ').join('_');
