@@ -1,4 +1,5 @@
 const Thing = require('../models/Thing');
+const path = require('path');
 const fs = require('fs');
 
 const getAllStuff = async (req, res) => {
@@ -63,6 +64,7 @@ const updateStuff = async (req, res) => {
             thing.description = stuff.description;
             thing.userId = req.auth.userId;
             thing.imageUrl = `${url}/images/${req.file.filename}`;
+            thing.price = stuff.price;
         }
         await thing.save();
         res.status(200).json({ thing });
