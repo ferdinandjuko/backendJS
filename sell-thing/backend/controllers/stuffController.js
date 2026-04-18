@@ -60,6 +60,10 @@ const updateStuff = async (req, res) => {
             thing.price = req.body.price;
         } else {
             const stuff = JSON.parse(req.body.thing);
+            if (thing.imageUrl) {
+                const fileName = thing.imageUrl.split('/images/')[1];
+                const filePath = path.join(__dirname, '..', 'images', fileName);
+            }
             thing.title = stuff.title;
             thing.description = stuff.description;
             thing.userId = req.auth.userId;
