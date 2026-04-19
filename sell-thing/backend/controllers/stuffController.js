@@ -63,6 +63,8 @@ const updateStuff = async (req, res) => {
             if (thing.imageUrl) {
                 const fileName = thing.imageUrl.split('/images/')[1];
                 const filePath = path.join(__dirname, '..', 'images', fileName);
+                if (fs.existsSync(filePath)) {
+                }
             }
             thing.title = stuff.title;
             thing.description = stuff.description;
