@@ -1,8 +1,10 @@
 frontend/node_modules
 frontend/package-lock.json
 frontend/yarn.lock
+frontend/.env
 
 
 server/node_modules
 server/package-lock.json
 server/logs
+server/.env
