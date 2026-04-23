@@ -15,7 +15,7 @@ export default function Register() {
     return (
         <div className='container'>
             <h2>Register Account</h2>
-            <form action="">
+            <form onSubmit={(e) => handleSubmit(e)}>
                 <div>
                     <label htmlFor="email">Email</label>
                     <input
@@ -38,7 +38,7 @@ export default function Register() {
                         }
                     />
                 </div>
-                <button type='submit' onClick={handleSubmit}>Submit</button>
+                <button type='submit'>Submit</button>
                 <span>
                     Already have an account? <Link to='/login'>Login</Link>
                 </span>
