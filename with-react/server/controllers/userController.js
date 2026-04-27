@@ -2,6 +2,22 @@ const User = require('../model/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const errorHandler = (err) => {
+    let errors = { email: '', password: '' };
+
+    if (err.code === 11000) {
+        errors.email = 'Email is already registered';
+        return errors;
+    }
+
+    if (err.message.includes('Users validation failed')) {
+        Object.values(err.errors).forEach(({ properties }) => {
+            errors[properties.path] = properties.message;
+        });
+    }
+    return errors;
+}
+
 const createUser = async (req, res) => {
     if (!req?.body?.email || !req?.body?.password) res.status(400).json({ message: 'Email and password required' });
     const hashed = await bcrypt.hash(req.body.password, 10);
@@ -12,7 +28,8 @@ const createUser = async (req, res) => {
         })
         res.status(201).json({ message: 'User registered successfully' });
     } catch (err) {
-        res.status(500).json({ err, created: false });
+        const error = errorHandler(err);
+        res.status(500).json({ error, created: false });
     }
 
 }
