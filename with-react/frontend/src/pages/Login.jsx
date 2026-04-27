@@ -22,7 +22,7 @@ export default function Login() {
 
     return (
         <div className='container'>
-            <h2>Register Account</h2>
+            <h2>Login</h2>
             <form onSubmit={(e) => handleSubmit(e)}>
                 <div>
                     <label htmlFor="email">Email</label>

@@ -4,9 +4,6 @@ const userController = require('../controllers/userController');
 
 router.post('/register', userController.createUser);
 
-router.post('/login', (req, res, next) => {
-    console.log(req.body);
-    res.redirect('/secret');
-})
+router.post('/login', userController.handleLogin);
 
 module.exports = router;
