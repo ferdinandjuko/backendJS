@@ -7,9 +7,13 @@ dotenv.config();
 const connectDB = require('./config/connDB');
 const corsOptions = require('./config/corsOptions');
 
+const userRouter = require('./routes/user');
+
 const app = express();
 
 connectDB();
+
+
 
 mongoose.connection.once('open', () => {
     console.log(`DB connected successfully`);
@@ -22,3 +26,5 @@ mongoose.connection.once('open', () => {
 app.use(cors(corsOptions));
 
 app.use(express.json());
+
+app.use('/', userRouter);
