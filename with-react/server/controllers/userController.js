@@ -19,17 +19,23 @@ const errorHandler = (err) => {
 }
 
 const createUser = async (req, res) => {
-    if (!req?.body?.email || !req?.body?.password) res.status(400).json({ message: 'Email and password required' });
-    const hashed = await bcrypt.hash(req.body.password, 10);
+    if (!req?.body?.email || !req?.body?.password) {
+        res.json({
+            error: {
+                password: 'Email and password required'
+            }
+        });
+    }
     try {
+        const hashed = await bcrypt.hash(req.body.password, 10);
         const newUser = await User.create({
             email: req.body.email,
             password: hashed
         })
-        res.status(201).json({ message: 'User registered successfully' });
+        res.status(201).json({ message: 'User registered successfully', created: true });
     } catch (err) {
         const error = errorHandler(err);
-        res.status(500).json({ error, created: false });
+        res.json({ error, created: false });
     }
 
 }

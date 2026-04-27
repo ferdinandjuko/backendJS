@@ -9,12 +9,26 @@ export default function Register() {
         password: '',
     });
 
+    const generateError = (err) => {
+        toast.error(err, {
+            position: 'bottom-right'
+        })
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const { data } = await axios.post('http://localhost:4000/register', {
                 ...values,
+            }, {
+                withCredentials: true
             });
+
+            if (data.error) {
+                const { email, password } = data.error;
+                if (email) generateError(email);
+                if (password) generateError(password);
+            } else { }
         } catch (error) {
             console.log(error);
         }
