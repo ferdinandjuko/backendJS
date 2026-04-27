@@ -11,27 +11,42 @@ const createUser = async (req, res) => {
             password: hashed
         })
         res.status(201).json({ message: 'User registered successfully' });
-    } catch (error) {
-        res.status(500).json(error);
+    } catch (err) {
+        res.status(500).json({ err, created: false });
     }
 
 }
 
 const handleLogin = async (req, res) => {
-    console.log(req.body);
     if (!req?.body?.email || !req?.body?.password) res.status(400).json({ message: 'Email and password required' });
+    const isDev = process.env.NODE_ENV !== 'production';
     try {
         const user = await User.findOne({ email: req.body.email });
-        if (!user) console.log(`Not found`);
-        console.log(user);
-    } catch {
-
+        if (!user) res.status(401).json({ message: 'Email or password Invalid' }); // Unauthorized
+        const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
+        if (!isPasswordValid) {
+            res.status(401).json({ message: 'Email or password Invalid' }) // Unauthorized
+        }
+        const accessToken = jwt.sign(
+            {
+                userId: user._id,
+                roles: user.roles
+            },
+            "SECRET_TOKEN_KEY",
+            { expiresIn: '24h' }
+        );
+        res.cookie('jwt', accessToken, {
+            httpOnly: true,
+            sameSite: isDev ? 'Lax' : 'None',
+            secure: !isDev ? true : false,
+            maxAge: 24 * 60 * 60 * 1000
+        });
+        res.status(200).json({ accessToken, auth: true });
+        // res.redirect('/secret');
+    } catch (error) {
+        res.status(500).json({ error, auth: false });
     }
-    jwt.sign(
-        {}
-    )
-    res.status(200).json({ accessToken: 'token' });
-    // res.redirect('/secret');
+
 }
 
 module.exports = {
