@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 
 export default function Register() {
+    const navigate = useNavigate();
     const [values, setValues] = useState({
         email: '',
         password: '',
@@ -28,7 +29,9 @@ export default function Register() {
                 const { email, password } = data.error;
                 if (email) generateError(email);
                 if (password) generateError(password);
-            } else { }
+            } else {
+                navigate('/');
+            }
         } catch (error) {
             console.log(error);
         }
