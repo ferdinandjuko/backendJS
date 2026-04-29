@@ -2,6 +2,7 @@ const User = require('../model/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const isDev = process.env.NODE_ENV != 'production';
 const errorHandler = (err) => {
     let errors = { email: '', password: '' };
 
@@ -27,7 +28,6 @@ const createUser = async (req, res) => {
         });
     }
     const hashed = await bcrypt.hash(req.body.password, 10);
-    const isDev = process.env.NODE_ENV != 'production';
     try {
         const newUser = await User.create({
             email: req.body.email,
@@ -56,14 +56,13 @@ const createUser = async (req, res) => {
 }
 
 const handleLogin = async (req, res) => {
-    if (!req?.body?.email || !req?.body?.password) res.status(400).json({ message: 'Email and password required' });
-    const isDev = process.env.NODE_ENV !== 'production';
+    if (!req?.body?.email || !req?.body?.password) res.status(400).json({ error: 'Email and password required' });
     try {
         const user = await User.findOne({ email: req.body.email });
-        if (!user) return res.json({ message: 'Email or password Invalid' }); // Unauthorized
+        if (!user) return res.json({ error: 'Email or password Invalid' }); // Unauthorized
         const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
         if (!isPasswordValid) {
-            return res.json({ message: 'Email or password Invalid' }) // Unauthorized
+            return res.json({ error: 'Email or password Invalid' }) // Unauthorized
         }
         const accessToken = jwt.sign(
             {
@@ -81,12 +80,43 @@ const handleLogin = async (req, res) => {
         });
         return res.status(200).json({ accessToken, auth: true });
     } catch (error) {
-        res.status(500).json({ error, auth: false });
+        res.status(401).json({ error, auth: false });
     }
 
 }
 
+const logOut = (req, res) => {
+    // On client, also delete the accessToken
+
+    const cookies = req.cookies;
+    if (!cookies?.jwt) return res.sendStatus(205); // No content
+
+    const accesToken = cookies.jwt;
+    jwt.verify(
+        accesToken,
+        'SECRET_TOKEN_KEY',
+        (err, decoded) => {
+            if (err) {
+                // res.clearCookie('jwt', { httOnly: true });
+                return res.status(403).json({ error: 'Unauthorized' }); // Invalid Token
+            }
+            if (decoded.userId) {
+                res.clearCookie('jwt', {
+                    httpOnly: true,
+                    sameSire: isDev ? 'Lax' : 'None',
+                    secure: isDev ? false : true
+                }); // Secure true - Only server on https
+                res.sendStatus(204)
+            } else {
+                res.clearCookie('jwt', { httOnly: true });
+                res.sendStatus(204);
+            }
+        }
+    )
+}
+
 module.exports = {
     createUser,
-    handleLogin
+    handleLogin,
+    logOut
 }

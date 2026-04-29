@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 
@@ -9,12 +9,24 @@ export default function Login() {
         password: '',
     });
 
+    const navigate = useNavigate();
+    const generateError = (err) => {
+        toast.error(err, {
+            position: 'bottom-right'
+        })
+    }
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const { data } = await axios.post('http://localhost:4000/login', {
                 ...values,
-            });
+            }, { withCredentials: true });
+            console.log(data);
+            if (data.error) {
+                generateError(data.error);
+            } else {
+                navigate('/');
+            }
         } catch (error) {
             console.log(error);
         }
