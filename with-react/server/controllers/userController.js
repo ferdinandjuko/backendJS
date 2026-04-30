@@ -86,6 +86,28 @@ const handleLogin = async (req, res) => {
 
 }
 
+const isAuthenticated = (req, res) => {
+    const authHeader = req.headers.authorization || req.headers.Authorization;
+    if (!authHeader?.startsWith('Bearer ')) return res.json({ status: false });
+    const token = authHeader.split(' ')[1];
+    jwt.verify(
+        token,
+        'SECRET_TOKEN_KEY',
+        async (err, decoded) => {
+            if (err) return res.json({ status: false });
+            try {
+                const user = await User.findOne({ _id: decoded.userId });
+                if (!user) {
+                    return res.json({ status: false });
+                }
+                res.json({ status: true });
+            } catch (error) {
+                return res.json({ status: false });
+            }
+        }
+    )
+}
+
 const logOut = (req, res) => {
     // On client, also delete the accessToken
 
@@ -119,5 +141,6 @@ const logOut = (req, res) => {
 module.exports = {
     createUser,
     handleLogin,
+    isAuthenticated,
     logOut
 }

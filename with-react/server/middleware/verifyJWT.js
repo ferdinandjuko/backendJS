@@ -6,12 +6,13 @@ const verifyJWT = (req, res, next) => {
         return res.status(403).json({ error: 'Unauthorized' })
     }
     token = authHeader.split(' ')[1];
-
     jwt.verify(
         token,
         'SECRET_TOKEN_KEY',
         (err, decoded) => {
-            if (err) return res.sendStatus(403); // Forbidden
+            if (err) {
+                return res.status(403).json({ error: 'Invalid token' }); // block, no next()
+            }
             req.auth = {
                 userId: decoded.userId,
                 roles: decoded.roles
