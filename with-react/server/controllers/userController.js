@@ -72,6 +72,7 @@ const handleLogin = async (req, res) => {
             "SECRET_TOKEN_KEY",
             { expiresIn: '24h' }
         );
+
         res.cookie('jwt', accessToken, {
             httpOnly: true,
             sameSite: isDev ? 'Lax' : 'None',

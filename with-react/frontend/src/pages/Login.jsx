@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 
 export default function Login() {
+    const navigate = useNavigate();
+    useEffect(() => {
+        const token = localStorage.getItem('jwt');
+        if (token) {
+            navigate('/')
+        }
+    });
+
     const [values, setValues] = useState({
         email: '',
         password: '',
     });
 
-    const navigate = useNavigate();
     const generateError = (err) => {
         toast.error(err, {
             position: 'bottom-right'
@@ -21,11 +28,14 @@ export default function Login() {
             const { data } = await axios.post('http://localhost:4000/login', {
                 ...values,
             }, { withCredentials: true });
-            console.log(data);
+
             if (data.error) {
                 generateError(data.error);
             } else {
-                navigate('/');
+                if (data.accessToken) {
+                    localStorage.setItem('jwt', data.accessToken); // store in browser
+                    navigate('/');
+                }
             }
         } catch (error) {
             console.log(error);
