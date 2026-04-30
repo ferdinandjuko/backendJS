@@ -8,7 +8,7 @@ router.post('/register', userController.createUser);
 
 router.post('/login', userController.handleLogin);
 
-router.post('/logout', verifyJWT, userController.logOut);
+router.post('/logout', userController.logOut);
 
 router.post('/', userController.isAuthenticated);
 

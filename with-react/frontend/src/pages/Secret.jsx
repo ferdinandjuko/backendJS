@@ -9,10 +9,31 @@ export default function Secret() {
     const navigate = useNavigate();
     const [cookies, setCookie, removeCookie] = useCookies([]);
     useEffect(() => {
-        const token = localStorage.getItem('jwt');
-        if (!token) {
-            navigate('/login');
+        const verifyUser = async () => {
+            const token = localStorage.getItem('jwt');
+            if (!token) {
+                navigate('/login');
+            } else { // check the reliability of your token
+                try {
+                    const { data } = await axios.post('http://localhost:4000',
+                        {},
+                        {
+                            withCredentials: true,
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        })
+
+                    if (!data.status) {
+                        localStorage.removeItem('jwt');
+                        navigate('/login');
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            }
         }
+        verifyUser();
     })
     const generateError = (err) => {
         toast.error(err, {
@@ -31,6 +52,7 @@ export default function Secret() {
                     }
                 }
             );
+
             const receivedStatus = [205, 204]
             if (receivedStatus.includes(result.status)) {
                 localStorage.removeItem('jwt');
@@ -40,6 +62,8 @@ export default function Secret() {
             if (error.response) {
                 if (error.response.status === 403) {
                     generateError(error.response.statusText);
+                    localStorage.removeItem('jwt');
+                    navigate('/login')
                 }
             } else {
                 console.log('Network error:', error.message);

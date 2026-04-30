@@ -70,7 +70,7 @@ const handleLogin = async (req, res) => {
                 roles: Object.values(user.roles)
             },
             "SECRET_TOKEN_KEY",
-            { expiresIn: '24h' }
+            { expiresIn: '2h' }
         );
 
         res.cookie('jwt', accessToken, {
@@ -100,8 +100,11 @@ const isAuthenticated = (req, res) => {
                 if (!user) {
                     return res.json({ status: false });
                 }
-                res.json({ status: true });
+                const name = user.email.split('@')[0];
+                const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+                return res.json({ status: true, user: capitalizedName });
             } catch (error) {
+                console.log(error);
                 return res.json({ status: false });
             }
         }
