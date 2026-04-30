@@ -66,7 +66,7 @@ export default function Secret() {
                 if (error.response.status === 403) {
                     generateError(error.response.statusText);
                     localStorage.removeItem('jwt');
-                    navigate('/login')
+                    navigate('/register')
                 }
             } else {
                 console.log('Network error:', error.message);

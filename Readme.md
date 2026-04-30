@@ -10,6 +10,8 @@ This repository contains multiple backend projects demonstrating different Node.
 | Project | Description |
 |---------|-------------|
 | **express-init** | Express.js setup with middleware, routes, and error handling |
+| **sell-thing** | CRUD application for managing items, Node.js, Vanilla JS, mongodb |
+| **with-react** | User authentication system with registration, login, and logout functionality |
 
 ## 🚀 Getting Started
 
