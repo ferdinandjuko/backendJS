@@ -8,7 +8,7 @@ import { CookiesProvider } from 'react-cookie'; // ✅ import it
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <CookiesProvider> {/* ✅ wrap everything here */}
+    <CookiesProvider>
       <App />
     </CookiesProvider>
   </React.StrictMode>

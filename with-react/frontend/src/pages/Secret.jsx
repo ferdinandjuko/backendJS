@@ -9,6 +9,8 @@ export default function Secret() {
     const navigate = useNavigate();
     const [cookies, setCookie, removeCookie] = useCookies([]);
     useEffect(() => {
+        let isMounted = true; // ✅ guard against double execution
+
         const verifyUser = async () => {
             const token = localStorage.getItem('jwt');
             if (!token) {
@@ -24,17 +26,20 @@ export default function Secret() {
                             }
                         })
 
+                    if (!isMounted) return; // ✅ don't update if unmounted
                     if (!data.status) {
                         localStorage.removeItem('jwt');
                         navigate('/login');
-                    }
+                    } else toast(`Hi ${data.user}`, { theme: 'dark' });
                 } catch (error) {
                     console.log(error);
                 }
             }
         }
         verifyUser();
-    })
+
+        return () => { isMounted = false; } // ✅ cleanup on unmount
+    }, [])
     const generateError = (err) => {
         toast.error(err, {
             position: 'bottom-right'
@@ -52,9 +57,7 @@ export default function Secret() {
                     }
                 }
             );
-
-            const receivedStatus = [205, 204]
-            if (receivedStatus.includes(result.status)) {
+            if ([205, 204].includes(result.status)) {
                 localStorage.removeItem('jwt');
                 navigate('/login');
             }

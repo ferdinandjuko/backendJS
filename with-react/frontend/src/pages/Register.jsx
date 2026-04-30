@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
@@ -9,6 +9,13 @@ export default function Register() {
         email: '',
         password: '',
     });
+
+    useEffect(() => {
+        const token = localStorage.getItem('jwt');
+        if (token) {
+            navigate('/');
+        }
+    })
 
     const generateError = (err) => {
         toast.error(err, {
